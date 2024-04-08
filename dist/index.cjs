@@ -3,15 +3,14 @@
 Object.defineProperties(exports, { __esModule: { value: true }, [Symbol.toStringTag]: { value: 'Module' } });
 
 const web = require('solid-js/web');
-const language = require('@codemirror/language');
-const state = require('@codemirror/state');
 const commands = require('@codemirror/commands');
+const state = require('@codemirror/state');
 const view = require('@codemirror/view');
 const langMarkdown = require('@codemirror/lang-markdown');
 const languageData = require('@codemirror/language-data');
+const language = require('@codemirror/language');
 const highlight = require('@lezer/highlight');
 const solidJs = require('solid-js');
-const inkMde = require('ink-mde');
 const autocomplete$2 = require('@codemirror/autocomplete');
 const search$2 = require('@codemirror/search');
 const codemirrorVim = require('@replit/codemirror-vim');
@@ -615,10 +614,16 @@ const appearance = (isDark) => {
 };
 
 const buildVendors = ([state, setState]) => {
-  const extensions = state().extensions.map((e) => e.initialValue([state, setState]));
+  const extensions = state().extensions.map(
+    (e) => e.initialValue([state, setState])
+  );
+  console.log(extensions);
   return extensions;
 };
-const buildVendorUpdates = async ([state, setState]) => {
+const buildVendorUpdates = async ([
+  state,
+  setState
+]) => {
   const effects = await Promise.all(
     state().extensions.map(async (extension2) => {
       return await extension2.reconfigure([state, setState]);
@@ -659,7 +664,9 @@ const createExtensions = () => {
 };
 const resolvers = [
   ([state]) => {
-    const [_lazyExtensions, extensions] = partitionPlugins(filterPlugins(pluginTypes.default, state().options));
+    const [_lazyExtensions, extensions] = partitionPlugins(
+      filterPlugins(pluginTypes.default, state().options)
+    );
     return extensions;
   },
   ([state]) => {
@@ -671,7 +678,9 @@ const resolvers = [
 ];
 const lazyResolvers = [
   async ([state], compartment) => {
-    const [lazyExtensions] = partitionPlugins(filterPlugins(pluginTypes.default, state().options));
+    const [lazyExtensions] = partitionPlugins(
+      filterPlugins(pluginTypes.default, state().options)
+    );
     if (lazyExtensions.length > 0) {
       return compartment.reconfigure(await Promise.all(lazyExtensions));
     }
@@ -742,6 +751,11 @@ const lazyResolvers = [
       return compartment.reconfigure(vim$1());
     }
     return compartment.reconfigure([]);
+  },
+  async (state, compartment) => {
+    const { markdownKeymap } = await Promise.resolve().then(() => markdownKeymap$1);
+    const test = markdownKeymap(state);
+    return compartment.reconfigure(test());
   }
 ];
 
@@ -1060,13 +1074,13 @@ const makeState$1 = ([
     doc: state$1().options.doc,
     selection: toVendorSelection(state$1().options.selections),
     extensions: [
+      view.keymap.of([...commands.defaultKeymap, ...commands.historyKeymap]),
       blockquote(),
       code(),
       commands.history(),
       ink$1(),
       lineWrapping(),
       theme(),
-      view.keymap.of([...commands.defaultKeymap, ...commands.historyKeymap]),
       ...buildVendors([state$1, setState])
     ]
   });
@@ -1597,12 +1611,12 @@ const render$1 = (text, element) => {
 };
 const katex$1 = () => {
   return [
-    inkMde.plugin({
+    plugin({
       key: "katex",
-      type: inkMde.pluginTypes.grammar,
+      type: pluginTypes.grammar,
       value: async () => grammar
     }),
-    inkMde.plugin({
+    plugin({
       key: "katex",
       value: async () => {
         return nodeDecorator({
@@ -1623,7 +1637,7 @@ const katex$1 = () => {
         });
       }
     }),
-    inkMde.plugin({
+    plugin({
       key: "katex",
       value: async () => {
         return nodeDecorator({
@@ -1659,7 +1673,7 @@ const katex$1 = () => {
         });
       }
     }),
-    inkMde.plugin({
+    plugin({
       key: "katex",
       value: async () => {
         return language.syntaxHighlighting(
@@ -1684,7 +1698,7 @@ const katex$1 = () => {
         );
       }
     }),
-    inkMde.plugin({
+    plugin({
       key: "katex",
       value: async () => {
         return view.EditorView.theme({
@@ -2662,6 +2676,34 @@ const spellcheck$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProper
 const vim = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   vim: codemirrorVim.vim
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const markdownKeymap = (state$1) => () => {
+  return state.Prec.highest(
+    view.keymap.of([
+      {
+        key: "Mod-b",
+        run: () => {
+          format(state$1, "bold");
+          return true;
+        },
+        preventDefault: true
+      },
+      {
+        key: "Mod-i",
+        run: () => {
+          format(state$1, "italic");
+          return true;
+        },
+        preventDefault: true
+      }
+    ])
+  );
+};
+
+const markdownKeymap$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  markdownKeymap
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const importer = async () => {

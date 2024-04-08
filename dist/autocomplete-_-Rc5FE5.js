@@ -9,7 +9,6 @@ import '@codemirror/lang-markdown';
 import '@codemirror/language-data';
 import '@lezer/highlight';
 import 'solid-js';
-import 'ink-mde';
 
 const autocomplete = (options) => {
   const [_lazyCompletions, completions] = partitionPlugins(filterPlugins(pluginTypes.completion, options));
@@ -25,4 +24,4 @@ const autocomplete = (options) => {
 };
 
 export { autocomplete };
-//# sourceMappingURL=autocomplete-DxNlNYMh.js.map
+//# sourceMappingURL=autocomplete-_-Rc5FE5.js.map

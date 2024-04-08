@@ -1,13 +1,12 @@
 import { ssr, ssrHydrationKey, escape, createComponent, ssrAttribute, ssrElement, mergeProps, renderToString as renderToString$1 } from 'solid-js/web';
 import { syntaxTree, syntaxHighlighting, HighlightStyle } from '@codemirror/language';
 import { SelectionRange, EditorSelection, Compartment, RangeSetBuilder, EditorState, StateField, RangeSet } from '@codemirror/state';
-import { history, defaultKeymap, historyKeymap } from '@codemirror/commands';
+import { defaultKeymap, historyKeymap, history } from '@codemirror/commands';
 import { EditorView, Decoration, ViewPlugin, keymap } from '@codemirror/view';
 import { markdown as markdown$1, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
 import { tags, Tag } from '@lezer/highlight';
 import { createSignal, Show, onMount, onCleanup, For, createEffect, createContext, useContext } from 'solid-js';
-import { plugin as plugin$1, pluginTypes as pluginTypes$1 } from 'ink-mde';
 
 const HYDRATION_MARKER = "data-ink-mde-ssr-hydration-marker";
 const HYDRATION_MARKER_SELECTOR = `[${HYDRATION_MARKER}]`;
@@ -608,10 +607,16 @@ const appearance = (isDark) => {
 };
 
 const buildVendors = ([state, setState]) => {
-  const extensions = state().extensions.map((e) => e.initialValue([state, setState]));
+  const extensions = state().extensions.map(
+    (e) => e.initialValue([state, setState])
+  );
+  console.log(extensions);
   return extensions;
 };
-const buildVendorUpdates = async ([state, setState]) => {
+const buildVendorUpdates = async ([
+  state,
+  setState
+]) => {
   const effects = await Promise.all(
     state().extensions.map(async (extension2) => {
       return await extension2.reconfigure([state, setState]);
@@ -652,7 +657,9 @@ const createExtensions = () => {
 };
 const resolvers = [
   ([state]) => {
-    const [_lazyExtensions, extensions] = partitionPlugins(filterPlugins(pluginTypes.default, state().options));
+    const [_lazyExtensions, extensions] = partitionPlugins(
+      filterPlugins(pluginTypes.default, state().options)
+    );
     return extensions;
   },
   ([state]) => {
@@ -664,7 +671,9 @@ const resolvers = [
 ];
 const lazyResolvers = [
   async ([state], compartment) => {
-    const [lazyExtensions] = partitionPlugins(filterPlugins(pluginTypes.default, state().options));
+    const [lazyExtensions] = partitionPlugins(
+      filterPlugins(pluginTypes.default, state().options)
+    );
     if (lazyExtensions.length > 0) {
       return compartment.reconfigure(await Promise.all(lazyExtensions));
     }
@@ -672,7 +681,7 @@ const lazyResolvers = [
   },
   async ([state], compartment) => {
     if (state().options.interface.autocomplete) {
-      const { autocomplete } = await import('./autocomplete-DxNlNYMh.js');
+      const { autocomplete } = await import('./autocomplete-_-Rc5FE5.js');
       return compartment.reconfigure(autocomplete(state().options));
     }
     return compartment.reconfigure([]);
@@ -696,7 +705,7 @@ const lazyResolvers = [
   },
   async ([state], compartment) => {
     if (state().options.interface.lists) {
-      const { lists } = await import('./lists-XHM8Wnjh.js');
+      const { lists } = await import('./lists-18AXqd1Q.js');
       return compartment.reconfigure(lists());
     }
     return compartment.reconfigure([]);
@@ -735,6 +744,11 @@ const lazyResolvers = [
       return compartment.reconfigure(vim());
     }
     return compartment.reconfigure([]);
+  },
+  async (state, compartment) => {
+    const { markdownKeymap } = await import('./markdownKeymap-8goFg2IF.js');
+    const test = markdownKeymap(state);
+    return compartment.reconfigure(test());
   }
 ];
 
@@ -1053,13 +1067,13 @@ const makeState$1 = ([
     doc: state().options.doc,
     selection: toVendorSelection(state().options.selections),
     extensions: [
+      keymap.of([...defaultKeymap, ...historyKeymap]),
       blockquote(),
       code(),
       history(),
       ink$1(),
       lineWrapping(),
       theme(),
-      keymap.of([...defaultKeymap, ...historyKeymap]),
       ...buildVendors([state, setState])
     ]
   });
@@ -1590,12 +1604,12 @@ const render$1 = (text, element) => {
 };
 const katex = () => {
   return [
-    plugin$1({
+    plugin({
       key: "katex",
-      type: pluginTypes$1.grammar,
+      type: pluginTypes.grammar,
       value: async () => grammar
     }),
-    plugin$1({
+    plugin({
       key: "katex",
       value: async () => {
         return nodeDecorator({
@@ -1616,7 +1630,7 @@ const katex = () => {
         });
       }
     }),
-    plugin$1({
+    plugin({
       key: "katex",
       value: async () => {
         return nodeDecorator({
@@ -1652,7 +1666,7 @@ const katex = () => {
         });
       }
     }),
-    plugin$1({
+    plugin({
       key: "katex",
       value: async () => {
         return syntaxHighlighting(
@@ -1677,7 +1691,7 @@ const katex = () => {
         );
       }
     }),
-    plugin$1({
+    plugin({
       key: "katex",
       value: async () => {
         return EditorView.theme({
@@ -2380,5 +2394,5 @@ const wrap = (textarea, options = {}) => {
   return instance;
 };
 
-export { appearanceTypes, buildWidget as b, ink as default, defineConfig, defineOptions, definePlugin, filterPlugins as f, hydrate, ink, inkPlugin, partitionPlugins as p, plugin, pluginTypes, render, renderToString, solidPrepareForHydration, wrap };
+export { format as a, appearanceTypes, buildWidget as b, ink as default, defineConfig, defineOptions, definePlugin, filterPlugins as f, hydrate, ink, inkPlugin, partitionPlugins as p, plugin, pluginTypes, render, renderToString, solidPrepareForHydration, wrap };
 //# sourceMappingURL=index.js.map

@@ -8,7 +8,6 @@ import '@codemirror/lang-markdown';
 import '@codemirror/language-data';
 import '@lezer/highlight';
 import 'solid-js';
-import 'ink-mde';
 
 const dotWidget = () => buildWidget({
   eq: () => {
@@ -111,4 +110,4 @@ const lists = () => {
 };
 
 export { lists };
-//# sourceMappingURL=lists-XHM8Wnjh.js.map
+//# sourceMappingURL=lists-18AXqd1Q.js.map
