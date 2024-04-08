@@ -1,6 +1,7 @@
 *.log
 .DS_Store
-dist
+svelte/dist
+vue/dist
 node_modules
 tmp
 

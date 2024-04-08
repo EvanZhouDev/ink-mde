@@ -1,0 +1,1 @@
+{"version":3,"file":"readonly-QuDRaVs2.js","sources":["../src/vendor/extensions/readonly.ts"],"sourcesContent":["import { EditorState } from '@codemirror/state'\n\nexport const readonly = () => {\n  return EditorState.readOnly.of(true)\n}\n"],"names":[],"mappings":";;AAEO,MAAM,WAAW,MAAM;AAC5B,EAAO,OAAA,WAAA,CAAY,QAAS,CAAA,EAAA,CAAG,IAAI,CAAA,CAAA;AACrC;;;;"}

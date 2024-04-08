@@ -1,0 +1,1 @@
+{"version":3,"file":"readonly-WlHFWFmn.js","sources":["../src/vendor/extensions/readonly.ts"],"sourcesContent":["import { EditorState } from '@codemirror/state'\n\nexport const readonly = () => {\n  return EditorState.readOnly.of(true)\n}\n"],"names":["readonly","EditorState"],"mappings":";AAEO,MAAMA,IAAW,MACfC,EAAY,SAAS,GAAG,EAAI;"}
